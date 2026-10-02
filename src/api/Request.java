@@ -8,6 +8,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -70,5 +71,14 @@ public class Request {
         HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
 
         return response.body();
+    }
+
+    public static String prettyPrint(String body) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        String prettyJson = mapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsString(mapper.readTree(body));
+
+        return prettyJson;
     }
 }
